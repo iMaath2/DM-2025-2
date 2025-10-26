@@ -9,6 +9,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,16 +30,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.weatherapp.ui.theme.WeatherAppTheme
-import com.weatherapp.RegisterActivity
 
-class LoginActivity : ComponentActivity() {
+class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             WeatherAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    LoginPage(
+                    RegisterPage(
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -49,16 +49,24 @@ class LoginActivity : ComponentActivity() {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginPage(modifier: Modifier = Modifier) {
+fun RegisterPage(modifier: Modifier = Modifier) {
+    var user by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
+    var confirmPassword by rememberSaveable { mutableStateOf("") }
     val activity = LocalActivity.current as Activity
     Column(
-        modifier = modifier.padding(16.dp).fillMaxSize()
+        modifier = modifier.padding(0.dp).fillMaxWidth()
     ) {
         Text(
             text = "Bem-vindo/a!",
             fontSize = 24.sp
+        )
+        OutlinedTextField(
+            value = user,
+            label = { Text(text = "Digite seu usuario") },
+            modifier = modifier.fillMaxWidth(fraction = 0.9f),
+            onValueChange = { user = it }
         )
         OutlinedTextField(
             value = email,
@@ -73,38 +81,28 @@ fun LoginPage(modifier: Modifier = Modifier) {
             onValueChange = { password = it },
             visualTransformation = PasswordVisualTransformation()
         )
+        OutlinedTextField(
+            value = confirmPassword,
+            label = { Text(text = "Confirme sua senha") },
+            modifier = modifier.fillMaxWidth(fraction = 0.9f),
+            onValueChange = { confirmPassword = it },
+            visualTransformation = PasswordVisualTransformation()
+        )
         Row(modifier = modifier) {
             Button( onClick = {
-                Toast.makeText(activity, "Login OK!", Toast.LENGTH_LONG).show()
-                activity.startActivity(
-                    Intent(activity, MainActivity::class.java).setFlags(  FLAG_ACTIVITY_SINGLE_TOP
-                    )
-                )
-            }, enabled = email.isNotEmpty() && password.isNotEmpty()
+                Toast.makeText(activity, "Registro OK!", Toast.LENGTH_LONG).show()
+                activity.finish()
+            }, enabled = email.isNotEmpty() && password.isNotEmpty() && confirmPassword.equals(password)
 
             ) {
-                Text("Login")
+                Text("Registrar")
             }
             Button(
-                onClick = { email = ""; password = "" }
+                onClick = { user = ""; email = ""; password = "" ; confirmPassword = "" }
 
             ) {
                 Text("Limpar")
             }
-            Button( onClick = {
-                Toast.makeText(activity, "Indo para tela de registro", Toast.LENGTH_LONG).show()
-
-                activity.startActivity(
-                    Intent(activity, RegisterActivity::class.java).setFlags(  FLAG_ACTIVITY_SINGLE_TOP
-                    )
-                )
-            }
-
-            ) {
-                Text("Registro")
-
-            }
-
         }
     }
 }
