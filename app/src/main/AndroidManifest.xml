@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherApp">
         <activity
+            android:name=".ui.CityDialog"
+            android:exported="false"
+            android:label="@string/title_activity_city_dialog"
+            android:theme="@style/Theme.WeatherApp" />
+        <activity
             android:name=".viewModel.MainViewModel"
             android:exported="false"
             android:label="@string/title_activity_main_view_model"
