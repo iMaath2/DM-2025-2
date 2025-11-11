@@ -38,6 +38,8 @@ import com.weatherapp.ui.nav.Route
 import com.weatherapp.ui.theme.WeatherAppTheme
 import com.weatherapp.viewModel.MainViewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
@@ -66,7 +68,8 @@ class MainActivity : ComponentActivity() {
 
                             actions = {
 
-                                IconButton( onClick = { finish() } ) {
+                                IconButton( onClick = { Firebase.auth.signOut()
+                                    finish() } ) {
                                     Icon(
                                         imageVector =
                                             Icons.AutoMirrored.Filled.ExitToApp,
@@ -95,7 +98,9 @@ class MainActivity : ComponentActivity() {
                             FloatingActionButton(onClick = { showDialog = true }) {
                                 Icon(Icons.Default.Add, contentDescription = "Adicionar")
                             }
+
                         }
+
                     }
                 ) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
