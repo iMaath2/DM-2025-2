@@ -13,6 +13,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.weatherapp.model.City
 import com.weatherapp.viewModel.ui.theme.WeatherAppTheme
 
@@ -29,7 +30,8 @@ class MainViewModel : ViewModel() {
         _cities.remove(city)
     }
 
-    fun add(name: String) {
-        _cities.add(City(name = name))
+    fun add(name: String, location: LatLng? = null) {
+        _cities.add(City(name = name, location = location))
     }
+
 }
