@@ -20,7 +20,9 @@ import com.weatherapp.viewModel.MainViewModel
 @Composable
 fun HomePage(
     modifier : Modifier = Modifier,
-    viewModel: MainViewModel = MainViewModel()
+    viewModel: MainViewModel = MainViewModel(
+        db = TODO()
+    )
 ) {
     Column(
         modifier = modifier.fillMaxSize()

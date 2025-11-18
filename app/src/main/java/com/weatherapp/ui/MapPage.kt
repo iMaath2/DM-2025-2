@@ -1,5 +1,6 @@
 package com.weatherapp.ui
 
+import android.Manifest
 import android.content.pm.PackageManager
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,9 @@ import com.weatherapp.viewModel.MainViewModel
 @Composable
 fun MapPage(
     modifier : Modifier = Modifier,
-    viewModel: MainViewModel = MainViewModel()
+    viewModel: MainViewModel = MainViewModel(
+        db = TODO()
+    )
 ){
     val recife = LatLng(-8.05, -34.9)
     val caruaru = LatLng(-8.27, -35.98)
@@ -44,7 +47,7 @@ fun MapPage(
     val hasLocationPermission by remember {
         mutableStateOf(
             ContextCompat.checkSelfPermission(context,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                Manifest.permission.ACCESS_FINE_LOCATION) ==
                     PackageManager.PERMISSION_GRANTED
         )
     }

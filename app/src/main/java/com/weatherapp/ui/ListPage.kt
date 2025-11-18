@@ -32,7 +32,9 @@ import com.weatherapp.viewModel.MainViewModel
 @Composable
 fun ListPage(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = MainViewModel()
+    viewModel: MainViewModel = MainViewModel(
+        db = TODO()
+    )
 ) {
     val cityList = viewModel.cities
     val activity = LocalActivity.current as Activity
