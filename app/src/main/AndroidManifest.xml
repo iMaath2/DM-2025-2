@@ -16,64 +16,69 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherApp">
         <activity
-            android:launchMode="singleTask"
+            android:name=".model.User"
+            android:exported="false"
+            android:label="@string/title_activity_user"
+            android:theme="@style/Theme.WeatherApp" />
+        <activity
             android:name=".WeatherApp"
             android:exported="false"
             android:label="@string/title_activity_weather_app"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.CityDialog"
             android:exported="false"
             android:label="@string/title_activity_city_dialog"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".viewModel.MainViewModel"
             android:exported="false"
             android:label="@string/title_activity_main_view_model"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.nav.MainNavHost"
             android:exported="false"
             android:label="@string/title_activity_main_nav_host"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.nav.BottomNavBar"
             android:exported="false"
             android:label="@string/title_activity_bottom_nav_bar"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.nav.BottomNavItem"
             android:exported="false"
             android:label="@string/title_activity_bottom_nav_item"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.MapPage"
             android:exported="false"
             android:label="@string/title_activity_map_page"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".ui.ListPage"
             android:exported="false"
             android:label="@string/title_activity_list_page"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp" />
         <activity
-            android:launchMode="singleTask"
             android:name=".LoginActivity"
             android:exported="true"
             android:label="@string/title_activity_login"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.WeatherApp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -9,13 +9,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.maps.model.LatLng
 import com.weatherapp.model.City
-import com.weatherapp.viewModel.ui.theme.WeatherAppTheme
+import com.weatherapp.model.User
+//import com.weatherapp.viewModel.ui.theme.WeatherAppTheme
 
 class MainViewModel : ViewModel() {
 
@@ -33,5 +35,8 @@ class MainViewModel : ViewModel() {
     fun add(name: String, location: LatLng? = null) {
         _cities.add(City(name = name, location = location))
     }
+    private val _user = mutableStateOf<User?> (null)
+    val user : User?
+        get() = _user.value
 
 }
