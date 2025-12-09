@@ -21,7 +21,8 @@ import com.weatherapp.viewModel.MainViewModel
 fun HomePage(
     modifier : Modifier = Modifier,
     viewModel: MainViewModel = MainViewModel(
-        db = TODO()
+        db = TODO(),
+        service = TODO()
     )
 ) {
     Column(

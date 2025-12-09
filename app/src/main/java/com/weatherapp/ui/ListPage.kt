@@ -33,7 +33,8 @@ import com.weatherapp.viewModel.MainViewModel
 fun ListPage(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = MainViewModel(
-        db = TODO()
+        db = TODO(),
+        service = TODO()
     )
 ) {
     val cityList = viewModel.cities

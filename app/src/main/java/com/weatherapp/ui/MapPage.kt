@@ -36,7 +36,8 @@ import com.weatherapp.viewModel.MainViewModel
 fun MapPage(
     modifier : Modifier = Modifier,
     viewModel: MainViewModel = MainViewModel(
-        db = TODO()
+        db = TODO(),
+        service = TODO()
     )
 ){
     val recife = LatLng(-8.05, -34.9)
@@ -53,9 +54,9 @@ fun MapPage(
     }
     GoogleMap (modifier = Modifier.fillMaxSize(), cameraPositionState = camPosState,
         onMapClick = {
-            viewModel.add("Cidade@${it.latitude}:${it.longitude}", location = it) },
+            viewModel.addCity(location = it) },
         onPOIClick = { poi ->
-            viewModel.add(poi.name, location = poi.latLng)
+            viewModel.addCity(location = poi.latLng)
         },
         properties = MapProperties(isMyLocationEnabled = hasLocationPermission),
         uiSettings = MapUiSettings(myLocationButtonEnabled = true)
