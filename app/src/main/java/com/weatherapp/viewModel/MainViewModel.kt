@@ -10,6 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
@@ -18,21 +19,26 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
 import com.weatherapp.api.WeatherService
+import com.weatherapp.api.toWeather
 import com.weatherapp.db.fb.FBCity
 import com.weatherapp.db.fb.FBDatabase
 import com.weatherapp.db.fb.FBUser
 import com.weatherapp.db.fb.toFBCity
 import com.weatherapp.model.City
 import com.weatherapp.model.User
+import com.weatherapp.model.Weather
+
 //import com.weatherapp.viewModel.ui.theme.WeatherAppTheme
 
 class MainViewModel (private val db: FBDatabase,
                      private val service : WeatherService
 ): ViewModel(), FBDatabase.Listener {
 
-    private val _cities = mutableStateListOf<City>()
-    val cities
-        get() = _cities.toList()
+    private val _cities = mutableStateMapOf<String, City>()
+    val cities : List<City>
+        get() = _cities.values.toList().sortedBy { it.name }
+    private val _weather = mutableStateMapOf<String, Weather>()
+
     private val _user = mutableStateOf<User?> (null)
     val user : User?
         get() = _user.value
@@ -57,6 +63,19 @@ class MainViewModel (private val db: FBDatabase,
         }
     }
 
+    fun weather (name: String) = _weather.getOrPut(name) {
+        loadWeather(name)
+        Weather.LOADING // return
+    }
+    private fun loadWeather(name: String) {
+        service.getWeather(name) { apiWeather ->
+            apiWeather?.let {
+                _weather[name] = apiWeather.toWeather()
+            }
+        }
+    }
+
+
     override fun onUserLoaded(user: FBUser) {
         _user.value = user.toUser()
     }
@@ -64,14 +83,17 @@ class MainViewModel (private val db: FBDatabase,
         //TODO("Not yet implemented")
     }
     override fun onCityAdded(city: FBCity) {
-        _cities.add(city.toCity())
+        _cities[city.name!!] = city.toCity()
     }
     override fun onCityUpdated(city: FBCity) {
-        //TODO("Not yet implemented")
+        _cities.remove(city.name)
+        _cities[city.name!!] = city.toCity()
     }
     override fun onCityRemoved(city: FBCity) {
-        _cities.remove(city.toCity())
+        _cities.remove(city.name)
     }
+
+
 }
 
 class MainViewModelFactory(private val db : FBDatabase,
