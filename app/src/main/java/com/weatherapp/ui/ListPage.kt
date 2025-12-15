@@ -54,7 +54,7 @@ fun ListPage(
                     viewModel.remove(city)
                 },
                 onClick = {
-                    Toast.makeText(activity, "Clicou em ${city.name}", Toast.LENGTH_SHORT).show()
+                    viewModel.city = city.name
                 }
             )
         }
