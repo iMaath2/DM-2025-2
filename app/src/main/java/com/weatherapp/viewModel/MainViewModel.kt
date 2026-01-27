@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.browser.browseractions.BrowserServiceFileProvider.loadBitmap
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -87,6 +88,8 @@ class MainViewModel (private val db: FBDatabase,
         service.getWeather(name) { apiWeather ->
             apiWeather?.let {
                 _weather[name] = apiWeather.toWeather()
+                loadBitmap(name)
+
             }
         }
     }
@@ -100,6 +103,13 @@ class MainViewModel (private val db: FBDatabase,
         service.getForecast(name) { apiForecast ->
             apiForecast?.let {
                 _forecast[name] = apiForecast.toForecast()
+            }
+        }
+    }
+    fun loadBitmap(name: String) {
+        _weather[name]?.let { weather ->
+            service.getBitmap(weather.imgUrl) { bitmap ->
+                _weather[name] = weather.copy(bitmap = bitmap)
             }
         }
     }
