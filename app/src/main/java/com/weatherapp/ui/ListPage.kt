@@ -41,7 +41,8 @@ fun ListPage(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = MainViewModel(
         db = TODO(),
-        service = TODO()
+        service = TODO(),
+        monitor = TODO()
     )
 ) {
     val cityList = viewModel.cities

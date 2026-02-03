@@ -42,7 +42,8 @@ fun MapPage(
     modifier : Modifier = Modifier,
     viewModel: MainViewModel = MainViewModel(
         db = TODO(),
-        service = TODO()
+        service = TODO(),
+        monitor = TODO()
     )
 ){
     val recife = LatLng(-8.05, -34.9)
