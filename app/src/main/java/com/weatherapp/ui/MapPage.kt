@@ -41,7 +41,7 @@ import com.weatherapp.viewModel.MainViewModel
 fun MapPage(
     modifier : Modifier = Modifier,
     viewModel: MainViewModel = MainViewModel(
-        db = TODO(),
+        repo = TODO(),
         service = TODO(),
         monitor = TODO()
     )

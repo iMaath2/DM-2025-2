@@ -7,9 +7,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -29,25 +27,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.util.Consumer
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.weatherapp.api.WeatherService
+import com.weatherapp.db.fb.FBDatabase
+import com.weatherapp.db.local.LocalDatabase
+import com.weatherapp.monitor.ForecastMonitor
+import com.weatherapp.repo.Repository
 import com.weatherapp.ui.CityDialog
-import com.weatherapp.ui.HomePage
 import com.weatherapp.ui.nav.BottomNavBar
 import com.weatherapp.ui.nav.BottomNavItem
 import com.weatherapp.ui.nav.MainNavHost
 import com.weatherapp.ui.nav.Route
 import com.weatherapp.ui.theme.WeatherAppTheme
 import com.weatherapp.viewModel.MainViewModel
-import androidx.navigation.NavDestination.Companion.hasRoute
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
-import com.weatherapp.api.WeatherService
-import com.weatherapp.db.fb.FBDatabase
-import com.weatherapp.monitor.ForecastMonitor
 import com.weatherapp.viewModel.MainViewModelFactory
 
 class MainActivity : ComponentActivity() {
@@ -56,13 +56,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val context = LocalContext.current
+
             val fbDB = remember { FBDatabase() }
             val weatherService = remember { WeatherService(this) }
-
             val monitor = remember { ForecastMonitor(this) }
 
+            val currentUser = Firebase.auth.currentUser
+            val dbName = if (currentUser != null) "${currentUser.uid}.db" else "local_weather.db"
+
+            val localDB = remember { LocalDatabase(context, dbName) }
+            val repo = remember { Repository(fbDB, localDB) }
+
             val viewModel : MainViewModel = viewModel(
-                factory = MainViewModelFactory(fbDB, weatherService, monitor)
+                factory = MainViewModelFactory(repo, weatherService, monitor)
             )
 
             DisposableEffect(Unit) {
@@ -73,7 +80,6 @@ class MainActivity : ComponentActivity() {
                 addOnNewIntentListener(listener)
                 onDispose { removeOnNewIntentListener(listener) }
             }
-
 
             val navController = rememberNavController()
             var showDialog by remember { mutableStateOf(false) }
@@ -95,7 +101,7 @@ class MainActivity : ComponentActivity() {
                                 val name = viewModel.user?.name?:"[carregando...]"
                                 Text("Bem-vindo/a! $name")
                             },
-                                    actions = {
+                            actions = {
 
                                 IconButton( onClick = { Firebase.auth.signOut() }
                                 ) {
@@ -151,6 +157,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
@@ -166,4 +173,3 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
-
