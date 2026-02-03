@@ -14,9 +14,6 @@ plugins {
 android {
     namespace = "com.weatherapp"
     compileSdk = 36
-    compileSdk {
-        version = release(36)
-    }
 
     defaultConfig {
         applicationId = "com.weatherapp"
@@ -42,8 +39,6 @@ android {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
 
-
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -53,17 +48,18 @@ android {
             )
         }
     }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-     //   jvmTarget = "11"
-    }
+
+
     buildFeatures {
         compose = true
         buildConfig = true
 
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
