@@ -16,6 +16,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.Icon
 import androidx.compose.material3.SegmentedButtonDefaults.Icon
 import androidx.compose.material3.Text
@@ -37,6 +39,9 @@ import com.weatherapp.viewModel.MainViewModel
 
 @Composable
 fun HomePage(viewModel: MainViewModel) {
+
+    val city = viewModel.cityMap[viewModel.city]
+
     Column {
         if (viewModel.city == null) {
             Column( modifier = Modifier.fillMaxSize()
@@ -57,8 +62,22 @@ fun HomePage(viewModel: MainViewModel) {
                 )
                 Column {
                     Spacer(modifier = Modifier.size(12.dp))
-                    Text( text = viewModel.city ?: "Selecione uma cidade...",
-                        fontSize = 28.sp )
+                    Row {
+                        Text(text = viewModel.city ?: "Selecione uma cidade...", fontSize = 28.sp)
+
+                        if (city != null) {
+                            val icon = if (city.isMonitored) Icons.Filled.Notifications else Icons.Outlined.Notifications
+                            Icon(
+                                imageVector = icon,
+                                contentDescription = "Monitorada?",
+                                modifier = Modifier
+                                    .size(32.dp)
+                                    .clickable {
+                                        viewModel.update(city = city.copy(isMonitored = !city.isMonitored))
+                                    }
+                            )
+                        }
+                    }
                     viewModel.city?.let { name ->
                         val weather = viewModel.weather(name)
                         Spacer(modifier = Modifier.size(12.dp))
